@@ -4,6 +4,9 @@
 
 <script>
 import L from 'leaflet'
+import { MapContentData } from './MapContentData.js'
+
+// const api_url = 'https://api.mapbox.com/datasets/v1/lionnarta/ckp3xzkhm02xy22qqxqwzytap/features?access_token=pk.eyJ1IjoibGlvbm5hcnRhIiwiYSI6ImNrcDN5ZG1vZjFmNjcyb213aWI0eDFxZ3EifQ.3ZDlqLIg1ssG-uYeYZtWSA';
 
 export default {
   name: 'MapContent',
@@ -12,7 +15,7 @@ export default {
       center: [-8.409518, 115.188919],
       zoom: 10,
       tileSize: 512,
-      zoomOffset: -1
+      zoomOffset: -1,
     }
   },
   methods: {
@@ -24,7 +27,7 @@ export default {
       
       var southWest = L.latLng(-8.874141, 113.960504),
           northEast = L.latLng(-8.017000, 116.260766),
-          bounds = L.latLngBounds(southWest, northEast);
+          bounds = L.latLngBounds(southWest, northEast);      
 
       var map = L.map("map-container", {
         center: this.center,
@@ -33,6 +36,20 @@ export default {
         maxBounds: bounds,
         layers: [stadia]
       });
+
+      L.geoJSON(MapContentData, {
+        onEachFeature: function(feature, layer) {
+          if (layer instanceof L.Polygon) {
+            layer.setStyle({
+              'color': feature.properties.fill
+            });
+          }else if (layer instanceof L.Polyline) {
+            layer.setStyle({
+              'color': feature.properties.stroke
+            })
+          }
+        }
+      }).addTo(map);
 
       var baseMap = {
         "Street" : street,
@@ -43,10 +60,16 @@ export default {
 
       L.control.layers(baseMap, null, {position: "bottomright"}).addTo(map);
       L.control.scale({position: "topright"}).addTo(map);
-
-      
-    }
+    },
+    // async getJsonFromApi() {
+    //   const res = await fetch(api_url);
+    //   this.geoJsonData = await res.json();
+    //   console.log(this.geoJsonData)
+    // }
   },
+  // beforeMount() {
+  //   this.getJsonFromApi();    
+  // },
   mounted() {
     this.setLeafletMap();
   }
