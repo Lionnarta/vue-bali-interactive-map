@@ -39,10 +39,12 @@ export default {
         "Topographic": topo,
         "Stadia": stadia,
         "World Imagery": wi
-      }
+      };
 
-      L.control.layers(baseMap, null, {position: "bottomright"}).addTo(map)
-      L.control.scale({position: "topright"}).addTo(map)
+      L.control.layers(baseMap, null, {position: "bottomright"}).addTo(map);
+      L.control.scale({position: "topright"}).addTo(map);
+
+      
     }
   },
   mounted() {
