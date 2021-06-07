@@ -1,5 +1,8 @@
 # vue-bali-interactive-map
 
+## Live Static Page
+http://bali.surge.sh/
+
 ## Project setup
 ```
 npm install
